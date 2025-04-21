@@ -19,6 +19,8 @@ model User {
   name String?
   posts Post[]
   createdAt DateTime @default(now())
+  accounts  Accounts[]
+  sessions  Sessions[]
 }
 
 model Post {
@@ -30,3 +32,21 @@ model Post {
   author User @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
 }
+
+model Accounts {
+  id Int @id @default(autoincrement())
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  provider String
+  providerAccountId String
+  refresh_token String?
+}
+
+model Sessions {
+  id Int @id @default(autoincrement())
+  sessionToken String @unique
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  expires DateTime
+}
+
